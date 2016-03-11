@@ -21,14 +21,15 @@ import com.google.api.client.testing.http.MockLowLevelHttpResponse;
 import com.postmen.sdk.java_sdk.config.Config;
 import com.postmen.sdk.java_sdk.config.ConfigBuilder;
 import com.postmen.sdk.java_sdk.exception.PostmenException;
+import com.postmen.sdk.java_sdk.handler.ExpBackOff;
 import com.postmen.sdk.java_sdk.handler.Handler;
 import com.postmen.sdk.java_sdk.handler.PostmenSleeper;
 import com.postmen.sdk.java_sdk.handler.PostmenUnsuccesfulResponseHandler;
 import com.postmen.sdk.java_sdk.model.LabelRequest;
 import com.postmen.sdk.java_sdk.model.LabelResponse;
 import com.postmen.sdk.java_sdk.model.Response;
-import com.postmen.sdk.java_sdk.util.PostmenUrl;
 
+import io.postmen.sdk.java_sdk.mockobject.MockUrl;
 import junit.framework.TestCase;
 
 public class HandlerExecuteTest extends TestCase{
@@ -81,11 +82,16 @@ public class HandlerExecuteTest extends TestCase{
 				request.setNumberOfRetries(5);
 			}
 		});
-		
-		Response response = handler.execute(requestFactory, "GET", new PostmenUrl(config), new LabelRequest(), LabelResponse.class);
-		
+		IOException err = null;
+		Response response = null;
+		try {
+			response = handler.execute(requestFactory, "GET", MockUrl.getUrl(), new LabelRequest(), LabelResponse.class);
+		} catch (IOException e) {
+			err = e;
+		}
 		assertTrue(response instanceof Response);
 		assertTrue(response instanceof LabelResponse);
+		assertNull(err);
 	}
 	
 	@Test(expected=PostmenException.class)
@@ -116,11 +122,15 @@ public class HandlerExecuteTest extends TestCase{
 				request.setNumberOfRetries(5);
 			}
 		});
+		PostmenException err = null;
 		try {
-			handler.execute(requestFactory, "GET", new PostmenUrl(config), null, LabelResponse.class);
+			handler.execute(requestFactory, "GET", MockUrl.getUrl(), null, LabelResponse.class);
+		} catch (PostmenException ex) {
+			err = ex;
 		} catch (IOException e) {
 
 		}
+		assertNotNull(err);
 	}
 	
 	@Test(expected=PostmenException.class)
@@ -152,7 +162,7 @@ public class HandlerExecuteTest extends TestCase{
 			}
 		});
 		
-		PostmenUnsuccesfulResponseHandler rHandler = new PostmenUnsuccesfulResponseHandler(new PostmenSleeper()) {
+		PostmenUnsuccesfulResponseHandler rHandler = new PostmenUnsuccesfulResponseHandler(new PostmenSleeper(), new ExpBackOff(), 5) {
 			private int i = 5;
 			@Override
 			public <T extends Response> boolean handleResponse(HttpRequest request, T response, boolean shouldRetry) {
@@ -164,12 +174,16 @@ public class HandlerExecuteTest extends TestCase{
 				}
 			}
 		};
+		PostmenException err = null;
 		try {
 			handler.setResponseHandler(rHandler);
-			handler.execute(requestFactory, "GET", new PostmenUrl(config), null, LabelResponse.class);
-		} catch (IOException e) {
+			handler.execute(requestFactory, "GET", MockUrl.getUrl(), null, LabelResponse.class);
+		} catch (PostmenException ex) {
+			err = ex;
+		}catch (IOException e) {
 		
 		}
+		assertNotNull(err);
 	}
 	
 }

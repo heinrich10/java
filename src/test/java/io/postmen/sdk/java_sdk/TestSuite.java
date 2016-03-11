@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 import io.postmen.sdk.java_sdk.handler.HandlerExecuteTest;
 import io.postmen.sdk.java_sdk.handler.HandlerTest;
 import io.postmen.sdk.java_sdk.handler.RateLimitExecuteInterceptorTest;
-import io.postmen.sdk.java_sdk.handler.ResponseHandlerTest;
+import io.postmen.sdk.java_sdk.handler.PostmenUnsuccessfulResponseHandlerTest;
 
 /**
  * Unit test for simple App.
@@ -16,7 +16,7 @@ import io.postmen.sdk.java_sdk.handler.ResponseHandlerTest;
 	HandlerExecuteTest.class,
 	HandlerTest.class,
 	RateLimitExecuteInterceptorTest.class,
-	ResponseHandlerTest.class
+	PostmenUnsuccessfulResponseHandlerTest.class
 })
 
 public class TestSuite {

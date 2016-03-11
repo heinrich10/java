@@ -1,16 +1,13 @@
 package com.postmen.sdk.java_sdk.config;
 
-import java.net.Proxy.Type;
-
 public class ConfigBuilder {
-	private String apiKey;
+	private String apiKey = null;
 	private String url = "https://secure.postmen.io/";
 	private String version = "v3";
-	private ProxyConfig proxy = null;
+	private String proxyUrl = null;
+	private int proxyPort = 80;
 	private boolean retry = true;
 	private boolean rate = true;
-	
-
 	
 	public ConfigBuilder() {
 		
@@ -39,8 +36,12 @@ public class ConfigBuilder {
 		this.version = version;
 		return this;
 	}
-	public ConfigBuilder setProxy(ProxyConfig proxy){
-		this.proxy = proxy;
+	public ConfigBuilder setProxyUrl(String proxyUrl){
+		this.proxyUrl = proxyUrl;
+		return this;
+	}
+	public ConfigBuilder setProxyPort(int proxyPort){
+		this.proxyPort = proxyPort;
 		return this;
 	}
 	public ConfigBuilder setRetry(boolean retry){
@@ -52,26 +53,11 @@ public class ConfigBuilder {
 		return this;
 	}
 	
-	public String getUrl() {
-		return url;
-	}
-	public String getApiKey() {
-		return apiKey;
-	}
-	public ProxyConfig getProxy() {
-		return proxy;
-	}
-	public boolean getRetry() {
-		return retry;
-	}
-	public boolean getRate() {
-		return rate;
-	}
-	
 	public Config build() {
 		Config config = new Config();
 		config.setApiKey(apiKey);
-		config.setProxy(proxy);
+		config.setProxyPort(proxyPort);
+		config.setProxyUrl(proxyUrl);
 		config.setRate(rate);
 		config.setRetry(retry);
 		config.setUrl(url);

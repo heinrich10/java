@@ -1,67 +1,52 @@
 package io.postmen.sdk.java_sdk.service;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.postmen.sdk.java_sdk.config.Config;
 import com.postmen.sdk.java_sdk.config.ConfigBuilder;
 import com.postmen.sdk.java_sdk.handler.Handler;
+import com.postmen.sdk.java_sdk.model.MapResponse;
 import com.postmen.sdk.java_sdk.service.Service;
 
+import io.postmen.sdk.java_sdk.mockobject.MockHandler;
 import junit.framework.TestCase;
 
 public class ServiceTest extends TestCase{
 	
 	private Config config;
+	private ServiceTestClass serviceTestClass;
+	private String name = "test";
 	
 	@Before
 	public void setUp() {
 		config = new ConfigBuilder().build();
+		serviceTestClass = new ServiceTestClass(config, name);
 	}
 	
 	@Test
 	public void testGetServiceName() {
-		
+		assertEquals(name, serviceTestClass.getServiceName());
+	}
+	
+	@Test
+	public void testGetHandler() {
+		assertTrue(serviceTestClass.getHandler() instanceof Handler);
 	}
 	
 	public class ServiceTestClass extends Service {
 		public ServiceTestClass(Config config, String serviceName) {
-			super(new Handler(config), config, serviceName);
+			super(new MockHandler(config), config, serviceName);
 		}
 		
 		public String getServiceName() {
-			return getServiceName();
+			return super.getServiceName();
 		}
-	}
-	
-	
-	/*
-	public class ChildService extends Service{
-		public Config getConfig() {
-			return config;
+		
+		public Handler getHandler() {
+			return super.getHandler();
 		}
-		public HttpHeaders getHeaders(){
-			return headers;
-		}
-	}
-	
-	private ChildService service;
-	private String apiKey = "test";
-	
-	@Before
-	public void setUp() {
-		ConfigBuilder cb = new ConfigBuilder();
-		cb.setApiKey(apiKey);
-		ConfigFactory.setConfig(cb);
-		service = new ChildService();
-	}
-	
-	@Test
-	public void testConfig() {
-		assertEquals(ConfigFactory.getConfig(), service.getConfig());
-		assertEquals(service.getHeaders().getContentType(), "application/json");
-		assertEquals(service.getHeaders().get("postmen-api-key"), ConfigFactory.getConfig().getApiKey());
-	}
-	*/
-	
+	}	
 }

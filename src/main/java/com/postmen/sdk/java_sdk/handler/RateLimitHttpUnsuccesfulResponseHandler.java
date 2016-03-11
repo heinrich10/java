@@ -15,8 +15,17 @@ import com.google.api.client.util.Sleeper;
 
 public class RateLimitHttpUnsuccesfulResponseHandler implements HttpUnsuccessfulResponseHandler{
 	
-	private static final int numRetries = 5;
 	private Logger logger = LoggerFactory.getLogger(RateLimitHttpUnsuccesfulResponseHandler.class);
+	private Sleeper sleeper;
+	private RateLimit rateLimit;
+	private ExpBackOff expBackOff;
+	
+	public RateLimitHttpUnsuccesfulResponseHandler(Sleeper sleeper, RateLimit rateLimit, ExpBackOff expBackOff) {
+		this.sleeper = sleeper;
+		this.rateLimit = rateLimit;
+		this.expBackOff = expBackOff;
+		// this.numberOfRetries = numberOfRetries;
+	}
 	
 	public boolean handleResponse(HttpRequest request, HttpResponse response, boolean supportsRetry)
 			throws IOException {
@@ -30,37 +39,27 @@ public class RateLimitHttpUnsuccesfulResponseHandler implements HttpUnsuccessful
 		if (retry && !supportsRetry) {
 			retry = false;
 		}
-		
 		BackOff backOff = null;
 		long delay = 0;
 		if (retry) {	
 			if(statusCode == 429) {
-				String time = response.getHeaders().getFirstHeaderStringValue("X-RateLimit-Reset");
-				long longNextDate = Long.parseLong(time);
-				long longNow = Calendar.getInstance().getTimeInMillis();
-				delay =  longNextDate - longNow;
+				rateLimit.setRateLimit(response.getHeaders());
+				long time = Calendar.getInstance().getTimeInMillis();
+				backOff = new RateLimitBackOff(time, rateLimit);
 				System.out.println("Rate Limit Exceeded " + delay);
 			} else if(statusCode >= 500){
-				delay = getDelay(request);
-				backOff = new PostmenBackOff(delay);
+				backOff = expBackOff;
+				// numberOfRetries--;
 				System.out.println("500 error " + delay);
 			} 
 			try {
-				backOff = new PostmenBackOff(delay);
-				return BackOffUtils.next(Sleeper.DEFAULT, backOff);
+				return BackOffUtils.next(sleeper, backOff);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} 
 		return retry;
-	}
-	
-	private long getDelay(HttpRequest request) {
-		int pow = numRetries - request.getNumberOfRetries();
-		long delay = (long) Math.pow(2, pow);
-		System.out.println("retrying in " + delay + " for the " + pow + " times");
-		return delay;
 	}
 }
 

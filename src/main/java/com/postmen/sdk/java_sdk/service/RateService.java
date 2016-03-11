@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.postmen.sdk.java_sdk.config.Config;
 import com.postmen.sdk.java_sdk.handler.Handler;
-import com.postmen.sdk.java_sdk.model.LabelsResponse;
 import com.postmen.sdk.java_sdk.model.RateRequest;
 import com.postmen.sdk.java_sdk.model.RateResponse;
 import com.postmen.sdk.java_sdk.model.RatesResponse;

@@ -26,7 +26,6 @@ import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.Beta;
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.postmen.sdk.java_sdk.config.Config;
 import com.postmen.sdk.java_sdk.exception.PostmenException;
 import com.postmen.sdk.java_sdk.model.MapResponse;
@@ -49,29 +48,36 @@ public class Handler {
 	
 	private PostmenUnsuccesfulResponseHandler responseHandler;
 	
+	private PostmenSleeper postmenSleeper;
+	
 	public Handler(Config config) {
 		this.config = config;
-		this.headers = setHeaders();
+		initClasses();
+		initHeaders();
 		initializeRequestFactory();
-		rateLimit = new RateLimit();
-		logger = LoggerFactory.getLogger(Handler.class);
-		responseHandler = new PostmenUnsuccesfulResponseHandler(new PostmenSleeper());
-		gson = new Gson();
+		responseHandler = new PostmenUnsuccesfulResponseHandler(postmenSleeper, new ExpBackOff(), numberOfRetries);
+		
 	}
 	
-	private HttpHeaders setHeaders(){
-		HttpHeaders headers = new HttpHeaders();
+	private void initClasses() {
+		rateLimit = new RateLimit();
+		postmenSleeper = new PostmenSleeper();
+		gson = new Gson();
+		JSONFACTORY = new JacksonFactory();
+		headers = new HttpHeaders();
+		logger = LoggerFactory.getLogger(Handler.class);
+	}
+	
+	private void initHeaders(){
 		headers.setContentType("application/json");
 		headers.set("postmen-api-key", config.getApiKey());
 		headers.set("x-postmen-agent", "java-sdk-1.0.0");
 		headers.set("connection", "keep-alive");
-		return headers;
 	}
 	
 	private void initializeRequestFactory() {
-		JSONFACTORY = new JacksonFactory();
-		if(config.getProxy() != null) {
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("", 80));
+		if(config.getProxyUrl() != null) {
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(config.getProxyUrl(), config.getProxyPort()));
 			HTTPTRANSPORT = new NetHttpTransport.Builder().setProxy(proxy).build();
 		} else {
 			HTTPTRANSPORT = new NetHttpTransport();
@@ -80,8 +86,8 @@ public class Handler {
 			public void initialize(HttpRequest request) {
 				request.setParser(new JsonObjectParser(JSONFACTORY));
 				request.setHeaders(headers);
-				request.setUnsuccessfulResponseHandler(new RateLimitHttpUnsuccesfulResponseHandler());
-				request.setInterceptor(new RateLimitExecuteInterceptor(rateLimit, new PostmenSleeper()));
+				request.setUnsuccessfulResponseHandler(new RateLimitHttpUnsuccesfulResponseHandler(postmenSleeper, rateLimit, new ExpBackOff()));
+				request.setInterceptor(new RateLimitExecuteInterceptor(rateLimit, postmenSleeper));
 				request.setNumberOfRetries(numberOfRetries);
 			}
 		});
@@ -113,7 +119,7 @@ public class Handler {
 		do {
 			request = requestFactory.buildRequest(method, endpoint, content);
 			response = request.execute();
-			setRateLimit(response.getHeaders());
+			rateLimit.setRateLimit(response.getHeaders());
 			res = response.parseAs(type);
 			retry = responseHandler.handleResponse(request, res, config.isRetry());
 			System.out.println(retry);
@@ -140,14 +146,6 @@ public class Handler {
 		Future<T> f = executor.submit(req);
 		executor.awaitTermination(1, TimeUnit.MINUTES);
 		return f;
-	}
-	
-	private void setRateLimit(HttpHeaders headers) {
-		int rateCount = Integer.parseInt(headers.getFirstHeaderStringValue("X-RateLimit-Remaining"));
-		// rateLimit = Integer.parseInt(headers.getFirstHeaderStringValue("X-RateLimit-Limit"));
-		long resetTime = Long.parseLong(headers.getFirstHeaderStringValue("X-RateLimit-Reset"));
-		rateLimit.setRateCount(rateCount);
-		rateLimit.setResetTime(resetTime);
 	}
 	
 	public void setResponseHandler(PostmenUnsuccesfulResponseHandler responseHandler) {

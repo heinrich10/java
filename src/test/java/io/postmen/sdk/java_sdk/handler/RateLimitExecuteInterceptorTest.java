@@ -14,13 +14,14 @@ import com.google.api.client.util.Sleeper;
 import com.postmen.sdk.java_sdk.handler.RateLimit;
 import com.postmen.sdk.java_sdk.handler.RateLimitExecuteInterceptor;
 
+import io.postmen.sdk.java_sdk.mockobject.MockSleeper;
 import junit.framework.TestCase;
 
 public class RateLimitExecuteInterceptorTest extends TestCase {
 	
 	private RateLimitExecuteInterceptor interceptor;
 	private HttpTransport transport;
-	private SleeperTest sleeper;
+	private MockSleeper sleeper;
 	private RateLimit rateLimit;
 	
 	public RateLimitExecuteInterceptorTest() {
@@ -31,7 +32,7 @@ public class RateLimitExecuteInterceptorTest extends TestCase {
 	@Before
 	public void setUp() {
 		transport = new MockHttpTransport();
-		sleeper = new SleeperTest();
+		sleeper = new MockSleeper();
 		rateLimit = new RateLimit();
 		interceptor = new RateLimitExecuteInterceptor(rateLimit, sleeper);
 	}

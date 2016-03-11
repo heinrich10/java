@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.postmen.sdk.java_sdk.config.Config;
 import com.postmen.sdk.java_sdk.handler.Handler;
 import com.postmen.sdk.java_sdk.model.Response;

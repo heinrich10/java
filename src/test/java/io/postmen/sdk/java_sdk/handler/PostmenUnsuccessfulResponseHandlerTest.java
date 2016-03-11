@@ -15,27 +15,29 @@ import com.google.api.client.testing.http.MockHttpTransport;
 import com.google.api.client.testing.http.MockLowLevelHttpRequest;
 import com.google.api.client.testing.http.MockLowLevelHttpResponse;
 import com.google.api.client.util.Sleeper;
+import com.postmen.sdk.java_sdk.handler.ExpBackOff;
 import com.postmen.sdk.java_sdk.handler.PostmenUnsuccesfulResponseHandler;
 import com.postmen.sdk.java_sdk.model.LabelResponse;
 import com.postmen.sdk.java_sdk.model.Meta;
 import com.postmen.sdk.java_sdk.util.PostmenUrl;
 
+import io.postmen.sdk.java_sdk.mockobject.MockSleeper;
 import junit.framework.TestCase;
 
-public class ResponseHandlerTest extends TestCase {
+public class PostmenUnsuccessfulResponseHandlerTest extends TestCase {
 	
-	private SleeperTest sleeper;
+	private MockSleeper sleeper;
 	private PostmenUnsuccesfulResponseHandler responseHandler;
 	private HttpTransport transport;
-	public ResponseHandlerTest() {
+	public PostmenUnsuccessfulResponseHandlerTest() {
 		super("Response Handler");
 	}
 	
 	@Before
 	public void setUp() {
-		sleeper = new SleeperTest();
+		sleeper = new MockSleeper();
 		
-		responseHandler = new PostmenUnsuccesfulResponseHandler(sleeper);
+		responseHandler = new PostmenUnsuccesfulResponseHandler(sleeper, new ExpBackOff(), 5);
 		transport = new MockHttpTransport();
 	}
 	
@@ -162,14 +164,5 @@ public class ResponseHandlerTest extends TestCase {
 			//responseHandler.handleResponse(req, labelResponse, true);
 		} catch (IOException e) {
 		}	
-	}
-	public class SleeperTest implements Sleeper {
-		private Long delay;
-		public void sleep(long millis) throws InterruptedException {
-			delay = millis;
-		}
-		public Long getDelay() {
-			return delay;
-		}
 	}
 }

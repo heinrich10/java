@@ -15,12 +15,12 @@ public class MockHandler extends Handler{
 	
 	@Override
 	public MapResponse callAndParseAsMap(String method, PostmenUrl url, Object body) {
-		return null;
+		return new MapResponse();
 	}
 	
 	@Override
 	public String callAndParseAsString(String method, PostmenUrl url, Object body) {
-		return null;
+		return "";
 	}
 
 }

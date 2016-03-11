@@ -1,6 +1,10 @@
 package com.postmen.sdk.java_sdk.handler;
 
+import java.io.IOException;
+
 import com.google.api.client.http.HttpRequest;
+import com.google.api.client.util.BackOff;
+import com.google.api.client.util.BackOffUtils;
 import com.google.api.client.util.Sleeper;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -10,14 +14,15 @@ public class PostmenUnsuccesfulResponseHandler {
 	
 	private int retriesLeft;
 	private Sleeper sleeper;
+	private BackOff expBackOff;
 	
-	public PostmenUnsuccesfulResponseHandler(Sleeper sleeper) {
-		retriesLeft = 5; 
+	public PostmenUnsuccesfulResponseHandler(Sleeper sleeper, ExpBackOff expBackOff, int retriesLeft) {
 		this.sleeper = sleeper;
+		this.expBackOff = expBackOff;
+		this.retriesLeft = retriesLeft;
 	}
 	
 	public <T extends Response> boolean handleResponse(HttpRequest request, T response, boolean shouldRetry) {
-		long delay = 0;
 		Boolean retry = true;
 		try {
 			if (retriesLeft > 0 && shouldRetry) {
@@ -26,8 +31,7 @@ public class PostmenUnsuccesfulResponseHandler {
 					retryable = false;
 				}
 				if(retryable) {
-					delay = getDelay(request) * 1000;
-					sleeper.sleep(delay);
+					BackOffUtils.next(sleeper, expBackOff);
 					retriesLeft--;
 				} else {
 					retry = false;
@@ -45,15 +49,10 @@ public class PostmenUnsuccesfulResponseHandler {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return retry;
 	}
-	
-	private long getDelay(HttpRequest request) {
-		int pow = request.getNumberOfRetries() - retriesLeft;
-		long delay = (long) Math.pow(2, pow);
-		// System.out.println("retrying in " + delay + " for the " + (int)(pow + 1) + " times");
-		return delay;
-	}
-	
 }

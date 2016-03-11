@@ -1,5 +1,7 @@
 package com.postmen.sdk.java_sdk.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.google.api.client.http.GenericUrl;
@@ -13,7 +15,17 @@ public class PostmenUrl extends GenericUrl{
 	
 	public PostmenUrl(Config config) {
 		super(config.getUrl());
-		appendRawPath(config.getVersion());
+		List<String> parts = this.getPathParts();
+		if(parts == null) {
+			parts = new ArrayList<String>();
+			parts.add("");
+			parts.add(config.getVersion());
+			this.setPathParts(parts);
+		} else {
+			appendRawPath(config.getVersion());
+		}
+		// appendRawPath("/");
+		// appendPath(config.getVersion());
 	}
 	
 	public PostmenUrl(Config config, String path) {
