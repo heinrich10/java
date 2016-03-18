@@ -10,11 +10,6 @@ public class ExpBackOff implements BackOff {
 	public ExpBackOff() {
 		delayTime = 1000;
 	}
-	/*
-	public ExpBackOff(Integer numRetries, Integer retriesLeft) {
-		computeDelayTime(numRetries, retriesLeft);
-	}
-	*/
 	
 	public void reset() throws IOException {
 			// TODO Auto-generated method stub
@@ -27,14 +22,4 @@ public class ExpBackOff implements BackOff {
 		delayTime *= 2;
 		return delay;
 	}
-	/*
-	public void setDelayTime(long delayTime) {
-		this.delayTime = delayTime;
-	}
-	
-	public void computeDelayTime(int numRetries, int retriesLeft) {
-		int pow = numRetries - retriesLeft;
-		this.delayTime = (long) Math.pow(2, pow) * 1000;
-	}
-	*/
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.postmen.javasdk.config.Config;
 import com.postmen.javasdk.config.ConfigBuilder;
+import com.postmen.javasdk.exception.ConfigException;
 import com.postmen.javasdk.model.Address;
 import com.postmen.javasdk.model.Dimension;
 import com.postmen.javasdk.model.Item;
@@ -18,13 +19,13 @@ import com.postmen.javasdk.model.Weight;
 import com.postmen.javasdk.service.RateService;
 
 public class RateExample {
-	private static final String apiKey = "5c0a9482-930f-49d8-a319-ea3d24081ad2";
 	
-	public static void calculate() {
-		Config config = new ConfigBuilder().setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
-		RateService service = new RateService(config);
+	public static void create() {
 		try {
+			Config config = new ConfigBuilder().setRetry(true).setRate(true).setEndpoint("http://localhost:8001/v3").setApiKey(ExampleHelper.getApiKey()).build();
+	    	
+			RateService service = new RateService(config);
+			
 			
 			RateRequest req = new RateRequest();
 			req.setAsync(false);
@@ -74,35 +75,44 @@ public class RateExample {
 			
 			req.setShipment(shipment);
 			
-			RateResponse data = service.calculate(req);
+			RateResponse data = service.create(req);
 			ExampleHelper.printObject(data);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConfigException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public static void get(){
-		Config config = new ConfigBuilder().setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
-		RateService service = new RateService(config);
 		try {
+			Config config = new ConfigBuilder().setRetry(true).setRate(true).setEndpoint("http://localhost:8001/v3").setApiKey(ExampleHelper.getApiKey()).build();
+	    	
+			RateService service = new RateService(config);
 			RatesResponse rates = service.get();
 			ExampleHelper.printObject(rates);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ConfigException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
 	}
 	
-	public static void getOne() {
-		Config config = new ConfigBuilder().setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
-		RateService service = new RateService(config);
+	public static void getById(String id) {
 		try {
-			RateResponse rate = service.get("4df31ceb-9f4a-48e9-88f1-04d334923e71");
+			Config config = new ConfigBuilder().setRetry(true).setRate(true).setEndpoint("http://localhost:8001/v3").setApiKey(ExampleHelper.getApiKey()).build();
+	    	RateService service = new RateService(config);
+			
+			RateResponse rate = service.getById(id);
 			ExampleHelper.printObject(rate);
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ConfigException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

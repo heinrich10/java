@@ -9,9 +9,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
@@ -33,7 +30,7 @@ import com.postmen.javasdk.model.Response;
 import com.postmen.javasdk.util.PostmenUrl;
 
 public class Handler {
-	private final int numberOfRetries = 5;
+	private final int numberOfRetries = 4;
 	
 	private HttpTransport HTTPTRANSPORT;
 	private JsonFactory JSONFACTORY;
@@ -44,7 +41,7 @@ public class Handler {
 	private Config config;
 	
 	private RateLimit rateLimit;
-	private Logger logger;
+	private RateLimitExecuteInterceptor rateLimitExecuteInterceptor;
 	
 	private PostmenUnsuccesfulResponseHandler responseHandler;
 	
@@ -54,18 +51,26 @@ public class Handler {
 		this.config = config;
 		initClasses();
 		initHeaders();
+		setupRateLimit();
 		initializeRequestFactory();
 		responseHandler = new PostmenUnsuccesfulResponseHandler(postmenSleeper, new ExpBackOff(), numberOfRetries);
 		
 	}
 	
-	private void initClasses() {
+	private void setupRateLimit() {
 		rateLimit = new RateLimit();
+		if(config.isRate()) {
+			rateLimitExecuteInterceptor = new RateLimitExecuteInterceptor(rateLimit, postmenSleeper);
+		} else {
+			rateLimitExecuteInterceptor = null;
+		}
+	}
+	
+	private void initClasses() {
 		postmenSleeper = new PostmenSleeper();
 		gson = new Gson();
 		JSONFACTORY = new JacksonFactory();
 		headers = new HttpHeaders();
-		logger = LoggerFactory.getLogger(Handler.class);
 	}
 	
 	private void initHeaders(){
@@ -86,9 +91,10 @@ public class Handler {
 			public void initialize(HttpRequest request) {
 				request.setParser(new JsonObjectParser(JSONFACTORY));
 				request.setHeaders(headers);
-				request.setUnsuccessfulResponseHandler(new RateLimitHttpUnsuccesfulResponseHandler(postmenSleeper, rateLimit, new ExpBackOff()));
-				request.setInterceptor(new RateLimitExecuteInterceptor(rateLimit, postmenSleeper));
+				request.setInterceptor(rateLimitExecuteInterceptor);
 				request.setNumberOfRetries(numberOfRetries);
+				request.setConnectTimeout(45000);
+				request.setThrowExceptionOnExecuteError(false);
 			}
 		});
 	}
@@ -122,7 +128,7 @@ public class Handler {
 			rateLimit.setRateLimit(response.getHeaders());
 			res = response.parseAs(type);
 			retry = responseHandler.handleResponse(request, res, config.isRetry());
-			System.out.println(retry);
+			// System.out.println(retry);
 		} while (retry);
 		
 		if(res.getMeta().getCode() > 200) {

@@ -14,7 +14,7 @@ public class Manifest {
 	@Key("updated_at")
 	private String updatedAt;
 	@Key
-	private List<LabelInfo> label;
+	private List<LabelInfo> labels;
 	@Key
 	private Files files;
 	
@@ -43,10 +43,10 @@ public class Manifest {
 		this.updatedAt = updatedAt;
 	}
 	public List<LabelInfo> getLabels() {
-		return label;
+		return labels;
 	}
-	public void setLabels(List<LabelInfo> label) {
-		this.label = label;
+	public void setLabels(List<LabelInfo> labels) {
+		this.labels = labels;
 	}
 	public Files getFiles() {
 		return files;

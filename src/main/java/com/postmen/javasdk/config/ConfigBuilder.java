@@ -1,26 +1,19 @@
 package com.postmen.javasdk.config;
 
+import com.postmen.javasdk.exception.ConfigException;
+
 public class ConfigBuilder {
 	private String apiKey = null;
-	private String url = "https://secure.postmen.io/";
 	private String version = "v3";
 	private String proxyUrl = null;
 	private int proxyPort = 80;
 	private boolean retry = true;
 	private boolean rate = true;
+	private String region = null;
+	private String endpoint = null;
 	
 	public ConfigBuilder() {
 		
-	}
-	
-	public ConfigBuilder(String apiKey) {
-		this.apiKey = apiKey;
-	}
-	
-	public ConfigBuilder(String apiKey, boolean retry, boolean rate) {
-		this.apiKey = apiKey;
-		this.retry = retry;
-		this.rate = rate;
 	}
 	
 	public ConfigBuilder setApiKey(String apiKey) {
@@ -28,8 +21,8 @@ public class ConfigBuilder {
 		return this;
 	}
 	
-	public ConfigBuilder setUrl(String url){
-		this.url = url;
+	public ConfigBuilder setEndpoint(String endpoint){
+		this.endpoint = endpoint;
 		return this;
 	}
 	public ConfigBuilder setVersion(String version){
@@ -53,15 +46,34 @@ public class ConfigBuilder {
 		return this;
 	}
 	
-	public Config build() {
+	public Config build() throws ConfigException {
+		if (apiKey == null) {
+			throw new ConfigException("api key is null");
+		}
+		String endpoint;
+		if (region == null) {
+			if(this.endpoint == null) {
+				throw new ConfigException("please choose region or add an endpoint");
+			} else {
+				endpoint = this.endpoint;
+			}
+			
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append("https://");
+			sb.append(region);
+			sb.append("-api.postmen.com/");
+			sb.append(version);
+			endpoint = sb.toString();
+		}
+
 		Config config = new Config();
 		config.setApiKey(apiKey);
 		config.setProxyPort(proxyPort);
 		config.setProxyUrl(proxyUrl);
 		config.setRate(rate);
 		config.setRetry(retry);
-		config.setUrl(url);
-		config.setVersion(version);
+		config.setEndpoint(endpoint);
 		
 		return config;
 	}

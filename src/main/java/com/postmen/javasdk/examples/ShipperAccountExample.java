@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import com.postmen.javasdk.config.Config;
 import com.postmen.javasdk.config.ConfigBuilder;
+import com.postmen.javasdk.exception.ConfigException;
 import com.postmen.javasdk.model.Address;
 import com.postmen.javasdk.model.MapResponse;
 import com.postmen.javasdk.model.ShipperAccount;
@@ -19,45 +20,52 @@ public class ShipperAccountExample {
 	private static final String apiKey = "5c0a9482-930f-49d8-a319-ea3d24081ad2";
 	
 	public static void get() {
-		ConfigBuilder cb = new ConfigBuilder();
-    	Config config = cb.setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
+		
     	ShipperAccountService service = null;
     	try {
+    		ConfigBuilder cb = new ConfigBuilder();
+        	Config config = cb.setRetry(true).setRate(true).setEndpoint("http://localhost:8001/v3/").setApiKey(apiKey).build();
+        	
     		service = new ShipperAccountService(config);
 			ShipperAccounts shipperAccounts = service.get();
+			service.get();
 			ExampleHelper.printObject(shipperAccounts);
-			Config nConfig = config.clone();
-			nConfig.setRetry(false);
-			service.get(nConfig);
 			
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConfigException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public static void getOne() {
-		ConfigBuilder cb = new ConfigBuilder();
-    	Config config = cb.setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
+		
     	ShipperAccountService service = null;
     	try {
+    		ConfigBuilder cb = new ConfigBuilder();
+        	Config config = cb.setRetry(true).setRate(true).setEndpoint("http://localhost:8001/").setApiKey(apiKey).build();
+        	
     		service = new ShipperAccountService(config);
     		ShipperAccount shipperAccount = service.get("df009f0c-f033-4a98-82e8-7221e77997fe");
 			ExampleHelper.printObject(shipperAccount);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ConfigException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	public static void createAndDelete() {
-		ConfigBuilder cb = new ConfigBuilder();
-    	Config config = cb.setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
+		
     	ShipperAccountService service = null;
     	try {
+    		ConfigBuilder cb = new ConfigBuilder();
+        	Config config = cb.setRetry(true).setRate(true).setEndpoint("http://localhost:8001/").setApiKey(apiKey).build();
+        	
     		service = new ShipperAccountService(config);
 			ShipperAccounts shipperAccounts = service.get();
 			ExampleHelper.printObject(shipperAccounts);
@@ -92,18 +100,23 @@ public class ShipperAccountExample {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ConfigException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	public static void getAsync() {
-		ConfigBuilder cb = new ConfigBuilder();
-    	Config config = cb.setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
-    	ShipperAccountService service = null;
-		service = new ShipperAccountService(config);
-		Future<ShipperAccountResponse> shipperAccount;
 		try {
+			ConfigBuilder cb = new ConfigBuilder();
+	    	Config config = cb.setRetry(true).setRate(true).setEndpoint("http://localhost:8001/").setApiKey(apiKey).build();
+	    	
+	    	ShipperAccountService service = null;
+			service = new ShipperAccountService(config);
+			Future<ShipperAccountResponse> shipperAccount;
+			
 			shipperAccount = service.getAsync("df009f0c-f033-4a98-82e8-7221e77997fe");
+			// do a lot of stuff
 			ExampleHelper.printObject(shipperAccount.get().getData());
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
@@ -111,15 +124,19 @@ public class ShipperAccountExample {
 		} catch (ExecutionException e3) {
 			// TODO Auto-generated catch block
 			e3.printStackTrace();
+		} catch (ConfigException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	public static void getMap() {
-		ConfigBuilder cb = new ConfigBuilder();
-    	Config config = cb.setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
-    	ShipperAccountService service = new ShipperAccountService(config);
-    	try {
+		try {
+			ConfigBuilder cb = new ConfigBuilder();
+	    	Config config = cb.setRetry(true).setRate(true).setEndpoint("http://localhost:8001/").setApiKey(apiKey).build();
+	    	
+	    	ShipperAccountService service = new ShipperAccountService(config);
+	    	
 			MapResponse response =  service.callAsMap("GET", "df009f0c-f033-4a98-82e8-7221e77997fe", null, null);
 			Map<Object, Object> data = response.getData();
 			String date = (String) data.get("created_at");
@@ -128,20 +145,27 @@ public class ShipperAccountExample {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ConfigException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	public static void getRaw() {
-		ConfigBuilder cb = new ConfigBuilder();
-    	Config config = cb.setRetry(true).setRate(true).setUrl("http://localhost:8001/").setApiKey(apiKey).build();
-    	
-    	ShipperAccountService service = new ShipperAccountService(config);
-    	
+		
     	try {
+    		ConfigBuilder cb = new ConfigBuilder();
+        	Config config = cb.setRetry(true).setRate(true).setEndpoint("http://localhost:8001/").setApiKey(apiKey).build();
+        	
+        	ShipperAccountService service = new ShipperAccountService(config);
+        	
     		String response = service.callAsRaw("GET", "df009f0c-f033-4a98-82e8-7221e77997fe", null, null);
     		System.out.println(response);
     	} catch (IOException e) {
     		e.printStackTrace();
-    	}
+    	} catch (ConfigException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

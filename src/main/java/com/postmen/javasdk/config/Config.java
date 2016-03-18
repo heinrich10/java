@@ -3,8 +3,7 @@ package com.postmen.javasdk.config;
 public class Config implements Cloneable {
 	
 	private String apiKey;
-	private String url;
-	private String version;
+	private String endpoint;
 	private String proxyUrl;
 	private int proxyPort;
 	private boolean retry;
@@ -22,21 +21,14 @@ public class Config implements Cloneable {
 		this.apiKey = apiKey;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getEndpoint() {
+		return endpoint;
 	}
 	
-	public void setUrl(String url) {
-		this.url = url;
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
 	}
 	
-	public String getVersion() {
-		return version;
-	}
-	
-	public void setVersion(String version) {
-		this.version = version;
-	}
 	public void setRetry(Boolean retry) {
 		this.retry = retry;
 	}
@@ -74,8 +66,7 @@ public class Config implements Cloneable {
 		clone.apiKey = this.apiKey;
 		clone.proxyPort = this.proxyPort;
 		clone.proxyUrl = this.proxyUrl;
-		clone.url = this.url;
-		clone.version = this.version;
+		clone.endpoint = this.endpoint;
 		clone.rate = this.rate;
 		clone.retry = this.retry;
 		

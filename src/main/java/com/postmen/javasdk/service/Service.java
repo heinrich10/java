@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.google.api.client.repackaged.com.google.common.annotations.Beta;
 import com.postmen.javasdk.config.Config;
 import com.postmen.javasdk.handler.Handler;
 import com.postmen.javasdk.model.MapResponse;
@@ -27,20 +28,50 @@ public abstract class Service {
 		this.SERVICE = serviceName;
 	}
 	
+	/**
+	 * Make a request that will return a Map response
+	 * @param method GET, POST, PUT, or DELETE
+	 * @param path Path after the endpoint, use cancel-labels for cancel labels, manifest for manifests, etc.
+	 * @param query Query parameters in a Map
+	 * @param body Body of a POST request
+	 * @return Map Response
+	 * @throws IOException
+	 */
 	public MapResponse callAsMap(String method, String path, Map<String, String> query, Object body) throws IOException {
 		PostmenUrl url = getUrl().appendPath(path).addQueries(query);
 		return handler.callAndParseAsMap(method, url, body);
 	}
-	  
+	
+	/**
+	 * Make a request that will return String
+	 * @param method GET, POST, PUT, or DELETE
+	 * @param path Path after the endpoint, use cancel-labels for cancel labels, manifest for manifests, etc.
+	 * @param query Query parameters in a Map
+	 * @param body Body of a POST request
+	 * @return String
+	 * @throws IOException
+	 */
 	public String callAsRaw(String method, String path, Map<String, String> query, Object body) throws IOException {
 		PostmenUrl url = getUrl().appendPath(path).addQueries(query);
 		return handler.callAndParseAsString(method, url, body);
 	}
 	
+	/**
+	 * Get the config of this Service object
+	 * @return Config
+	 */
 	public Config getConfig() {
 		return config;
 	}
 	
+	/**
+	 * Reinitialize the configuration of this class;
+	 * <p>
+	 * example:
+	 * Config config = service.getConfig();
+	 * config.setProxy("some.proxy.com");
+	 * service.reInitialize();
+	 */
 	public void reInitialize() {
 		this.handler = new Handler(config);
 	}
@@ -60,11 +91,12 @@ public abstract class Service {
 	protected <T extends Response> T post(Handler handler, PostmenUrl endpoint, Object body, Class<T> type) throws IOException {
 		return handler.call("POST", endpoint, body, type);
 	}
-	
+	@Beta
 	protected <T extends Response> Future<T> getAsync(Handler handler, PostmenUrl endpoint, Class<T> type) throws InterruptedException {
 		return handler.executeAysnc("GET", endpoint, null, type);
 	}
 	
+	@Beta
 	protected <T extends Response> Future<T> postAsync(Handler handler, PostmenUrl endpoint, Object body, Class<T> type) throws InterruptedException {
 		return handler.executeAysnc("POST", endpoint, body, type);
 	}
@@ -82,10 +114,10 @@ public abstract class Service {
 	}
 	
 	protected PostmenUrl getUrl() {
-		return new PostmenUrl(config, SERVICE);
+		return new PostmenUrl(config.getEndpoint(), SERVICE);
 	}
 	
 	protected PostmenUrl getUrl(Config config) {
-		return new PostmenUrl(config, SERVICE);
+		return new PostmenUrl(config.getEndpoint(), SERVICE);
 	}
 }

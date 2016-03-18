@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.google.api.client.http.HttpRequestFactory;
 import com.postmen.javasdk.config.Config;
 import com.postmen.javasdk.config.ConfigBuilder;
+import com.postmen.javasdk.exception.ConfigException;
 import com.postmen.javasdk.handler.Handler;
 import com.postmen.javasdk.model.LabelResponse;
 import com.postmen.javasdk.model.MapResponse;
@@ -25,7 +26,7 @@ public class HandlerTest extends TestCase{
 	private Config config;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws ConfigException {
 		config = new ConfigBuilder().setApiKey("someApiKey").build();
 		handler = new Handler(config) {
 			@Override

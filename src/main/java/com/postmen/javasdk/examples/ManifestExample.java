@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.postmen.javasdk.config.Config;
 import com.postmen.javasdk.config.ConfigBuilder;
+import com.postmen.javasdk.exception.ConfigException;
 import com.postmen.javasdk.model.LabelResponse;
 import com.postmen.javasdk.model.ManifestRequest;
 import com.postmen.javasdk.model.ManifestResponse;
@@ -12,22 +13,21 @@ import com.postmen.javasdk.service.ManifestService;
 
 public class ManifestExample {
 
-	private static final String apiKey = "8552df2f-66dc-4585-a02e-9dc7cba7a45f";
-	
 	public static void manifest() {
 		
-		Config config = new ConfigBuilder().setApiKey(apiKey).setUrl("https://sandbox-api.postmen.io/").build();
-		LabelService labelService = new LabelService(config);
-		ManifestService manifestService = new ManifestService(config);
 		
 		try {
-			LabelResponse labelResponse = labelService.create(ExampleHelper.createLabelRequest());
-			ExampleHelper.printObject(labelResponse);
-			ManifestRequest req = new ManifestRequest("1fa0af68-4651-43d2-b3b3-45c1da063b0a");
+			Config config = new ConfigBuilder().setApiKey(ExampleHelper.getApiKey()).setEndpoint("http://localhost:8001/v3").build();
+			ManifestService manifestService = new ManifestService(config);
+			
+			ManifestRequest req = new ManifestRequest(ExampleHelper.getShipperAccount());
 			req.setAsync(false);
-			ManifestResponse manifestResponse = manifestService.manifest(req);
+			ManifestResponse manifestResponse = manifestService.create(req);
 			ExampleHelper.printObject(manifestResponse);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConfigException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

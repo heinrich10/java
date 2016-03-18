@@ -20,6 +20,7 @@ import com.google.api.client.testing.http.MockLowLevelHttpRequest;
 import com.google.api.client.testing.http.MockLowLevelHttpResponse;
 import com.postmen.javasdk.config.Config;
 import com.postmen.javasdk.config.ConfigBuilder;
+import com.postmen.javasdk.exception.ConfigException;
 import com.postmen.javasdk.exception.PostmenException;
 import com.postmen.javasdk.handler.ExpBackOff;
 import com.postmen.javasdk.handler.Handler;
@@ -44,8 +45,8 @@ public class HandlerExecuteTest extends TestCase{
 	}
 	
 	@Before
-	public void setUp() {
-		config = new ConfigBuilder().setRetry(true).setRate(true).setUrl("http://localhost:8001/").build();
+	public void setUp() throws ConfigException {
+		config = new ConfigBuilder().setRetry(true).setRate(true).setEndpoint("http://localhost:8001/").build();
     	handler = new Handler(config);
     	headers = new HttpHeaders();
 		headers.setContentType("application/json");

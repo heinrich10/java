@@ -3,19 +3,19 @@ package com.postmen.javasdk.handler;
 import com.google.api.client.http.HttpHeaders;
 
 public class RateLimit {
-	private int rateCount = 10;
-	private long resetTime = 0;
+	private Integer rateCount = 10;
+	private Long resetTime = new Long(0);
 	
-	public int getRateCount() {
+	public Integer getRateCount() {
 		return rateCount;
 	}
-	public void setRateCount(int rateCount) {
+	public void setRateCount(Integer rateCount) {
 		this.rateCount = rateCount;
 	}
 	public long getResetTime() {
 		return resetTime;
 	}
-	public void setResetTime(long resetTime) {
+	public void setResetTime(Long resetTime) {
 		this.resetTime = resetTime;
 	}
 	public void decrementRateCount() {
@@ -24,9 +24,9 @@ public class RateLimit {
 		}
 	}
 	public void setRateLimit(HttpHeaders headers) {
-		int rateCount = Integer.parseInt(headers.getFirstHeaderStringValue("X-RateLimit-Remaining"));
+		Integer rateCount = Integer.parseInt(headers.getFirstHeaderStringValue("X-RateLimit-Remaining"));
 		// rateLimit = Integer.parseInt(headers.getFirstHeaderStringValue("X-RateLimit-Limit"));
-		long resetTime = Long.parseLong(headers.getFirstHeaderStringValue("X-RateLimit-Reset"));
+		Long resetTime = Long.parseLong(headers.getFirstHeaderStringValue("X-RateLimit-Reset"));
 		this.rateCount = rateCount;
 		this.resetTime = resetTime;
 	}

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.postmen.javasdk.config.Config;
 import com.postmen.javasdk.config.ConfigBuilder;
+import com.postmen.javasdk.exception.ConfigException;
 import com.postmen.javasdk.handler.Handler;
 import com.postmen.javasdk.mockobject.MockHandler;
 import com.postmen.javasdk.model.MapResponse;
@@ -21,8 +22,8 @@ public class ServiceTest extends TestCase{
 	private String name = "test";
 	
 	@Before
-	public void setUp() {
-		config = new ConfigBuilder().build();
+	public void setUp() throws ConfigException {
+		config = new ConfigBuilder().setApiKey("asdad").build();
 		serviceTestClass = new ServiceTestClass(config, name);
 	}
 	
