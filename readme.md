@@ -23,14 +23,14 @@
   - [Generic Methods available in Service Classes](#generic-methods-available-in-service-classes)
   - [Request Objects](#request-objects)
   - [Response Object](#response-object)
-  - [Retry Strategy](#retry-strategy)
+- [Retry Strategy](#retry-strategy)
   - [Rate Limit](#rate-limit)
   - [Retryable Error](#retryable-error)
-  - [ErrorHandling](#errorhandling)
-  - [Examples](#examples)
-  - [Testing](#testing)
-  - [License](#license)
-  - [Contributors](#contributors)
+- [ErrorHandling](#errorhandling)
+- [Examples](#examples)
+- [Testing](#testing)
+- [License](#license)
+- [Contributors](#contributors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -41,7 +41,7 @@ JAVA SDK for Postmen API. For problems and suggestions, please open a GitHub Iss
 ### Requirements
 
 JVM version >= 1.6.
-tested on 
+tested on
  - oraclejdk8
  - openjdk7
  - openjdk6
@@ -79,16 +79,16 @@ Instantiate a ConfigBuilder class, set options, and then use the build() method.
 ConfigBuilder cb = new ConfigBuilder();
 Config config = cb.set(apiKey).setRetry(false).build();
 ````
-| parameter | explanation                                                      | 
-|-----------|------------------------------------------------------------------| 
-| apiKey    | your api key to access Postmen                                   | 
-| region    | choose which region you are using (sandbox or production)        | 
-| endpoint  | sets a custom endpoint (ignores version and region if populated) | 
-| version   | version of the api (used in conjunction with region)             | 
-| proxyUrl  | Url of the proxy                                                 | 
-| proxyPort | Port of the proxy (default: 80)                                  | 
-| retry     | retry if there are errors (default: true)                        | 
-| rate      | helps you handle the rate limit (default: true)                  | 
+| parameter | explanation                                                      |
+|-----------|------------------------------------------------------------------|
+| apiKey    | your api key to access Postmen                                   |
+| region    | choose which region you are using (sandbox or production)        |
+| endpoint  | sets a custom endpoint (ignores version and region if populated) |
+| version   | version of the api (used in conjunction with region)             |
+| proxyUrl  | Url of the proxy                                                 |
+| proxyPort | Port of the proxy (default: 80)                                  |
+| retry     | retry if there are errors (default: true)                        |
+| rate      | helps you handle the rate limit (default: true)                  |
 
 ### Proxy
 The sdk only allows defining proxy url and proxy port. If you are using socks proxy, then please check JVM systemwide proxy configuration
@@ -103,12 +103,12 @@ service.reInitialize();
 ### Service Classes
 Instantiate a specific Service Class that will help you process Label, Rate, Manifest, or Cancel Label
 
-| Transaction Type          | Service Class      | 
-|---------------------------|--------------------| 
-| Label Transactions        | LabelService       | 
-| Rate Transactions         | RateService        | 
-| Manifest Transactions     | ManifestService    | 
-| Cancel Label Transactions | CancelLabelService | 
+| Transaction Type          | Service Class      |
+|---------------------------|--------------------|
+| Label Transactions        | LabelService       |
+| Rate Transactions         | RateService        |
+| Manifest Transactions     | ManifestService    |
+| Cancel Label Transactions | CancelLabelService |
 
 
 ### service.create(Request Object);
@@ -167,32 +167,32 @@ There are 4 main Request Objects:
 Creating a Label example:
 ``` Java
 LabelRequest req = new LabelRequest();
-		
+
 req.setAsync(false);
 req.setServiceType("spsr_intl");
-		
+
 ShipperAccount shipperAccount = new ShipperAccount(getShipperAccount());
 req.setShipperAccount(shipperAccount);
-		
+
 Parcel parcel = new Parcel();
 parcel.setDescription("Parcel");
 parcel.setBoxType("custom");
 parcel.setWeight(new Weight(1.5, "kg"));
 parcel.setDimension(new Dimension(20, 30, 30, "cm"));
-		
+
 Item item = new Item();
 item.setDescription("Food Bar");
 item.setOriginCountry("USA");
 item.setQuantity(2);
-		
+
 item.setPrice(new Money(50, "USD"));
-		
+
 item.setWeight(new Weight(0.6, "kg"));
 item.setSku("Epic_Food_Bar");
 item.setHsCode("7877966");
-		
+
 parcel.addItems(item);
-		
+
 Address shipFrom = new Address();
 shipFrom.setContactName("Joe Smith");
 shipFrom.setCompanyName("Aftership");
@@ -204,7 +204,7 @@ shipFrom.setCountry("HKG");
 shipFrom.setPhone("123456789");
 shipFrom.setEmail("mail@mail.com");
 shipFrom.setType("business");
-		
+
 Address shipTo = new Address();
 shipTo.setContactName("Jon Poole");
 shipTo.setStreet1("test");
@@ -215,13 +215,13 @@ shipTo.setCountry("RUS");
 shipTo.setPhone("12345");
 shipTo.setEmail("test@test.com");
 shipTo.setType("residential");
-		
+
 Shipment shipment = new Shipment();
 shipment.addParcels(parcel);
 shipment.setShipFrom(shipFrom);
 shipment.setShipTo(shipTo);
 req.setShipment(shipment);
-		
+
 Customs customs = new Customs();
 customs.setPurpose("gift");
 customs.setTermsOfTrade("ddu");
@@ -244,9 +244,9 @@ Label label = response.getData();
 // label contains your label info
 ```
 
-### Retry Strategy
+## Retry Strategy
 ### Rate Limit
-if you set config.setRate(true), the sdk will help you handle the rate limit. 
+if you set config.setRate(true), the sdk will help you handle the rate limit.
 ### Retryable Error
 if you set config.setRetry(true), the sdk will help you retry for errors returned by the server.
 There will be 5 retries, and then the SDK will throw a PostmenException.
@@ -260,55 +260,55 @@ try {
     // returns the message
     e.getMessage();
 } catch (IOException e1) {
-    
+
 }
 ```
 Remember to catch PostmenException before IOException since PostmenException is a child of IOException.
 
-### ErrorHandling
+## ErrorHandling
 As long as you set `config.setRetry(true)`, the sdk will help you retry the request for 4 times, each with an increasing delay.
 
-| retry | delay | 
-|-------|-------| 
-| 1     | 1s    | 
-| 2     | 2s    | 
-| 3     | 4s    | 
-| 4     | 8s    | 
+| retry | delay |
+|-------|-------|
+| 1     | 1s    |
+| 2     | 2s    |
+| 3     | 4s    |
+| 4     | 8s    |
 
 After the 4th retry, the service class will throw PostmenException.
 You may choose to catch or not to catch the error since the parent class of PostmenException is IOException.
 Available method for PostmenException:
 
-| Method        | Return Trype | Explanation                                                                | 
-|---------------|--------------|----------------------------------------------------------------------------| 
-| getCode()     | Integer      | Error code                                                                 | 
-| isRetryable() | Boolean      | Indicates if error is retryable                                            | 
-| getMessage()  | String       | Error message (e.g. The request was invalid or cannot be otherwise served) | 
-| getDetails()  | Array        | Error details (e.g. Destination country must be RUS or KAZ)                | 
+| Method        | Return Trype | Explanation                                                                |
+|---------------|--------------|----------------------------------------------------------------------------|
+| getCode()     | Integer      | Error code                                                                 |
+| isRetryable() | Boolean      | Indicates if error is retryable                                            |
+| getMessage()  | String       | Error message (e.g. The request was invalid or cannot be otherwise served) |
+| getDetails()  | Array        | Error details (e.g. Destination country must be RUS or KAZ)                |
 
 
-### Examples
+## Examples
 There are 4 example class in com.postmen.javasdk. To run, simple choose an operation and provide your API KEY.
 
 Change the API key in `CredentialHelper`
 
-| File                        | Description                      | 
-|-----------------------------|----------------------------------| 
-| RateExample.create()        | rates object creation            | 
-| RateExample.get()           | rates object(s) retrieve         | 
-| LabelExample.create()       | labels object creation           | 
-| LabelExample.get()          | labels object(s) retrieve        | 
-| ManifestExample.create()    | manifests object creation        | 
-| ManifestExample.get()       | manifests object(s) retrieve     | 
-| CancelLabelExample.create() | cancel-labels object creation    | 
-| CancelLabelExample.get()    | cancel-labels object(s) retrieve | 
+| File                        | Description                      |
+|-----------------------------|----------------------------------|
+| RateExample.create()        | rates object creation            |
+| RateExample.get()           | rates object(s) retrieve         |
+| LabelExample.create()       | labels object creation           |
+| LabelExample.get()          | labels object(s) retrieve        |
+| ManifestExample.create()    | manifests object creation        |
+| ManifestExample.get()       | manifests object(s) retrieve     |
+| CancelLabelExample.create() | cancel-labels object creation    |
+| CancelLabelExample.get()    | cancel-labels object(s) retrieve |
 
-### Testing
+## Testing
 if you want to contribute to the SDK, run the automated unit test before making a pull request.
 `mvn test`
 
-### License
+## License
 Released under the MIT license. See the LICENSE file for details.
 
-### Contributors
-- Heinrich Chan - 
+## Contributors
+- Heinrich Chan -
