@@ -24,7 +24,7 @@ public class CancelLabelService extends Service {
 	 * Cancels a label
 	 * @param req Cancel Label Request Object
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelResponse create(CancelLabelRequest req) throws IOException {
 		PostmenUrl url = getUrl();
@@ -37,7 +37,7 @@ public class CancelLabelService extends Service {
 	 * @param req Cancel Label Request Object
 	 * @param config Custom configuration for this request
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelResponse create(CancelLabelRequest req, Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -48,7 +48,7 @@ public class CancelLabelService extends Service {
 	/**
 	 * Get all Cancel Labels you have
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelsResponse get() throws IOException {
 		PostmenUrl url = getUrl();
@@ -60,7 +60,7 @@ public class CancelLabelService extends Service {
 	 * Get all Cancel Labels you have with custom configuration
 	 * @param config Custom configuration for this request
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelsResponse get(Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -72,7 +72,7 @@ public class CancelLabelService extends Service {
 	 * Get Cancel Labels with query parameters
 	 * @param query Query parameters in a Map
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelsResponse getWithParam(Map<String, String> query) throws IOException {
 		PostmenUrl url = getUrl().addQueries(query);
@@ -85,7 +85,7 @@ public class CancelLabelService extends Service {
 	 * @param query Query parameters in a Map
 	 * @param config Custom configuration for this request
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelsResponse getWithParam(Map<String, String> query, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).addQueries(query);
@@ -97,7 +97,7 @@ public class CancelLabelService extends Service {
 	 * Get Cancel Labels with query parameters
 	 * @param query Query parameters in String format beginning with ?
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelsResponse getWithParam(String query) throws IOException {
 		PostmenUrl url = getUrl().appendPath(query);
@@ -110,7 +110,7 @@ public class CancelLabelService extends Service {
 	 * @param query Query parameters in String format beginning with ?
 	 * @param config Custom configuration for this request
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelsResponse getWithParam(String query, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(query);
@@ -122,7 +122,7 @@ public class CancelLabelService extends Service {
 	 * Get a certain Cancel Label using id
 	 * @param id Id of the Cancel Label
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelResponse getWithId(String id) throws IOException {
 		PostmenUrl url = getUrl().appendPath(id);
@@ -135,7 +135,7 @@ public class CancelLabelService extends Service {
 	 * @param id Id of the Cancel Label
 	 * @param config Custom configuration for this request
 	 * @return Cancel label response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public CancelLabelResponse getWithId(String id, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(id);

@@ -24,7 +24,7 @@ public class LabelService extends Service {
 	 * Create a label using a Label Request Object
 	 * @param req Label Request Object
 	 * @return		Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelResponse create(LabelRequest req) throws IOException {
 		PostmenUrl url = getUrl();
@@ -37,7 +37,7 @@ public class LabelService extends Service {
 	 * @param req Label Request Object
 	 * @param config custom configuration for this certain request
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelResponse create(LabelRequest req, Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -48,7 +48,7 @@ public class LabelService extends Service {
 	/**
 	 * Get a list of labels you have
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelsResponse get() throws IOException {
 		PostmenUrl url = getUrl();
@@ -60,7 +60,7 @@ public class LabelService extends Service {
 	 * Get a list of labels you have
 	 * @param config custom configuration for this request
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelsResponse get(Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -72,7 +72,7 @@ public class LabelService extends Service {
 	 * Get request with query parameters
 	 * @param map query parameters in a Map
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelsResponse getWithParam(Map<String, String> map) throws IOException {
 		PostmenUrl url = getUrl().addQueries(map);
@@ -85,7 +85,7 @@ public class LabelService extends Service {
 	 * @param map query parameters in a Map
 	 * @param config custom configuration for this request
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelsResponse getWithParam(Map<String, String> map, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).addQueries(map);
@@ -97,7 +97,7 @@ public class LabelService extends Service {
 	 * Get request with string query parameters and custom configuration
 	 * @param param string query parameters starting with ?
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelsResponse getWithParam(String param) throws IOException {
 		PostmenUrl url = getUrl().appendPath(param);
@@ -110,7 +110,7 @@ public class LabelService extends Service {
 	 * @param param string query parameters starting with ?
 	 * @param config custom configuration for this request
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public LabelsResponse getWithParam(String param, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(param);
@@ -122,9 +122,9 @@ public class LabelService extends Service {
 	 * Get a certain label using id as parameter
 	 * @param id id of label
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
-	public LabelResponse getWithId(String id) throws IOException {
+	public LabelResponse getById(String id) throws IOException {
 		PostmenUrl url = getUrl().appendPath(id);
 		LabelResponse labelResponse = get(getHandler(), url, LabelResponse.class);
 		return labelResponse;
@@ -135,9 +135,9 @@ public class LabelService extends Service {
 	 * @param id id of label
 	 * @param config custom configuration for this request
 	 * @return Label Response Object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
-	public LabelResponse getWithId(String id, Config config) throws IOException {
+	public LabelResponse getById(String id, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(id);
 		LabelResponse labelResponse = get(new Handler(config), url, LabelResponse.class);
 		return labelResponse;

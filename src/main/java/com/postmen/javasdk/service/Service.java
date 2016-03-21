@@ -35,7 +35,7 @@ public abstract class Service {
 	 * @param query Query parameters in a Map
 	 * @param body Body of a POST request
 	 * @return Map Response
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public MapResponse callAsMap(String method, String path, Map<String, String> query, Object body) throws IOException {
 		PostmenUrl url = getUrl().appendPath(path).addQueries(query);
@@ -49,7 +49,7 @@ public abstract class Service {
 	 * @param query Query parameters in a Map
 	 * @param body Body of a POST request
 	 * @return String
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public String callAsRaw(String method, String path, Map<String, String> query, Object body) throws IOException {
 		PostmenUrl url = getUrl().appendPath(path).addQueries(query);
@@ -66,11 +66,12 @@ public abstract class Service {
 	
 	/**
 	 * Reinitialize the configuration of this class;
-	 * <p>
+	 * <pre>
 	 * example:
 	 * Config config = service.getConfig();
 	 * config.setProxy("some.proxy.com");
 	 * service.reInitialize();
+	 * </pre>
 	 */
 	public void reInitialize() {
 		this.handler = new Handler(config);

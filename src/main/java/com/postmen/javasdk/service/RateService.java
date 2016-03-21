@@ -14,7 +14,7 @@ public class RateService extends Service{
 	
 	/**
 	 * Instantiates a service to manipulate rates
-	 * @param config
+	 * @param config Configuration built by ConfigBuilder
 	 */
 	public RateService(Config config) {
 		super(config, "rates");
@@ -24,7 +24,7 @@ public class RateService extends Service{
 	 * Creates a rate
 	 * @param req Rate request object
 	 * @return Rate response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RateResponse create(RateRequest req) throws IOException {
 		PostmenUrl url = getUrl();
@@ -37,7 +37,7 @@ public class RateService extends Service{
 	 * @param req Rate request object
 	 * @param config Custom configuration for this request
 	 * @return Rate response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RateResponse create(RateRequest req, Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -48,7 +48,7 @@ public class RateService extends Service{
 	/**
 	 * Gets all rate objects you have
 	 * @return Rates response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RatesResponse get() throws IOException {
 		PostmenUrl url = getUrl();
@@ -60,7 +60,7 @@ public class RateService extends Service{
 	 * Gets all rate objects you have with custom configuration
 	 * @param config Custom configuration for this request
 	 * @return Rates response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RatesResponse get(Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -72,7 +72,7 @@ public class RateService extends Service{
 	 * Get rates with query parameters
 	 * @param query Query parameters in a Map
 	 * @return Rates response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RatesResponse getWithParam(Map<String, String> query) throws IOException {
 		PostmenUrl url = getUrl().addQueries(query);
@@ -85,7 +85,7 @@ public class RateService extends Service{
 	 * @param query Query parameters in a Map
 	 * @param config Custom configuration for this request
 	 * @return Rates response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RatesResponse getWithParam(Map<String, String> query, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).addQueries(query);
@@ -97,7 +97,7 @@ public class RateService extends Service{
 	 * Get rates with query parameters in String
 	 * @param query Query parameters in a String beginning with ?
 	 * @return Rates response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RatesResponse getWithParam(String query) throws IOException {
 		PostmenUrl url = getUrl().appendPath(query);
@@ -110,7 +110,7 @@ public class RateService extends Service{
 	 * @param query Query parameters in a String beginning with ?
 	 * @param config Custom configuration for this request
 	 * @return Rates response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RatesResponse getWithParam(String query, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(query);
@@ -120,9 +120,9 @@ public class RateService extends Service{
 	
 	/**
 	 * Get rate with rate id
-	 * @param id id with
+	 * @param id Id of the rate object
 	 * @return Rate response
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RateResponse getById(String id) throws IOException {
 		PostmenUrl url = getUrl().appendPath(id);
@@ -132,10 +132,10 @@ public class RateService extends Service{
 	
 	/**
 	 * Get rate with rate id and custom configuration
-	 * @param id
-	 * @param config
-	 * @return
-	 * @throws IOException
+	 * @param id Id of the rate object
+	 * @param config Custom configuration for this request
+	 * @return Rate response
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public RateResponse getById(String id, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(id);

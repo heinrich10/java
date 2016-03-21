@@ -24,7 +24,7 @@ public class ManifestService extends Service {
 	 * Creates a manifest
 	 * @param req Manifest request object
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestResponse create(ManifestRequest req) throws IOException {
 		PostmenUrl url = getUrl();
@@ -37,7 +37,7 @@ public class ManifestService extends Service {
 	 * @param req Manifest request object
 	 * @param config Custom configuration for this request
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestResponse create(ManifestRequest req, Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -48,7 +48,7 @@ public class ManifestService extends Service {
 	/**
 	 * Gets all Manifests you have
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestsResponse get() throws IOException {
 		PostmenUrl url = getUrl();
@@ -60,7 +60,7 @@ public class ManifestService extends Service {
 	 * Gets all Manifests you have with custom configuration
 	 * @param config Custom configuration for this request
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestsResponse get(Config config) throws IOException {
 		PostmenUrl url = getUrl(config);
@@ -72,7 +72,7 @@ public class ManifestService extends Service {
 	 * Get Manifests with query parameters
 	 * @param query Query parameters in Map
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestsResponse getWithParam(Map<String, String> query) throws IOException {
 		PostmenUrl url = getUrl().addQueries(query);
@@ -85,7 +85,7 @@ public class ManifestService extends Service {
 	 * @param query Query parameters in Map
 	 * @param config Custom configuration for this request
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestsResponse getWithParam(Map<String, String> query, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).addQueries(query);
@@ -97,7 +97,7 @@ public class ManifestService extends Service {
 	 * Get Manifests with query parameters
 	 * @param query Query parameters in a String beginning with ?
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestsResponse getWithParam(String query) throws IOException {
 		PostmenUrl url = getUrl().appendPath(query);
@@ -110,7 +110,7 @@ public class ManifestService extends Service {
 	 * @param query Query parameters in a String beginning with ?
 	 * @param config Custom configuration for this request
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestsResponse getWithParam(String query, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(query);
@@ -122,7 +122,7 @@ public class ManifestService extends Service {
 	 * Get a Manifest using id
 	 * @param id Id of the Manifest
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestResponse getById(String id) throws IOException {
 		PostmenUrl url = getUrl().appendPath(id);
@@ -135,7 +135,7 @@ public class ManifestService extends Service {
 	 * @param id Id of the Manifest
 	 * @param config Custom configuration for this request
 	 * @return Manifest response object
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
 	public ManifestResponse getById(String id, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(id);

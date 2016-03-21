@@ -30,8 +30,11 @@ import com.postmen.javasdk.model.Response;
 import com.postmen.javasdk.util.PostmenUrl;
 
 public class Handler {
-	private final int numberOfRetries = 4;
+	private final int DEFAULT_NUMBER_OF_RETRIES = 4;
+	private final int DEFAULT_CONNECTION_TIMEOUT = 45000;
+	private final String VERSION = "java-sdk-1.0.0";
 	
+	private Integer numberOfRetries = DEFAULT_NUMBER_OF_RETRIES;
 	private HttpTransport HTTPTRANSPORT;
 	private JsonFactory JSONFACTORY;
 	private HttpRequestFactory requestFactory;
@@ -76,7 +79,7 @@ public class Handler {
 	private void initHeaders(){
 		headers.setContentType("application/json");
 		headers.set("postmen-api-key", config.getApiKey());
-		headers.set("x-postmen-agent", "java-sdk-1.0.0");
+		headers.set("x-postmen-agent", VERSION);
 		headers.set("connection", "keep-alive");
 	}
 	
@@ -93,7 +96,7 @@ public class Handler {
 				request.setHeaders(headers);
 				request.setInterceptor(rateLimitExecuteInterceptor);
 				request.setNumberOfRetries(numberOfRetries);
-				request.setConnectTimeout(45000);
+				request.setConnectTimeout(DEFAULT_CONNECTION_TIMEOUT);
 				request.setThrowExceptionOnExecuteError(false);
 			}
 		});
@@ -160,5 +163,9 @@ public class Handler {
 	
 	public PostmenUnsuccesfulResponseHandler getResponseHandler() {
 		return responseHandler;
+	}
+	
+	public void setNumberOfRetries(int numberOfRetries){
+		this.numberOfRetries = numberOfRetries;
 	}
 }
