@@ -27,7 +27,7 @@ public class HandlerTest extends TestCase{
 	
 	@Before
 	public void setUp() throws ConfigException {
-		config = new ConfigBuilder().setApiKey("someApiKey").build();
+		config = new ConfigBuilder().setRegion("sandbox").setApiKey("someApiKey").build();
 		handler = new Handler(config) {
 			@Override
 			public <T extends Response> T execute(HttpRequestFactory requestFactory, String method, PostmenUrl endpoint, Object body, Class<T> type) throws IOException {

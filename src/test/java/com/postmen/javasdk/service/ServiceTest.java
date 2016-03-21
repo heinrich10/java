@@ -23,7 +23,7 @@ public class ServiceTest extends TestCase{
 	
 	@Before
 	public void setUp() throws ConfigException {
-		config = new ConfigBuilder().setApiKey("asdad").build();
+		config = new ConfigBuilder().setRegion("sandbox").setApiKey("asdad").build();
 		serviceTestClass = new ServiceTestClass(config, name);
 	}
 	

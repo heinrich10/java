@@ -46,7 +46,7 @@ public class HandlerExecuteTest extends TestCase{
 	
 	@Before
 	public void setUp() throws ConfigException {
-		config = new ConfigBuilder().setRetry(true).setRate(true).setEndpoint("http://localhost:8001/").build();
+		config = new ConfigBuilder().setApiKey("test").setEndpoint("http://localhost:8001/").build();
     	handler = new Handler(config);
     	headers = new HttpHeaders();
 		headers.setContentType("application/json");

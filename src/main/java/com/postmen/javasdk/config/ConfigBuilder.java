@@ -46,6 +46,11 @@ public class ConfigBuilder {
 		return this;
 	}
 	
+	public ConfigBuilder setRegion(String region) {
+		this.region = region;
+		return this;
+	}
+	
 	public Config build() throws ConfigException {
 		if (apiKey == null) {
 			throw new ConfigException("api key is null");

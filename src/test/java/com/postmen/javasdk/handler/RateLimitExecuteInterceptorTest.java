@@ -10,9 +10,6 @@ import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.testing.http.HttpTesting;
 import com.google.api.client.testing.http.MockHttpTransport;
-import com.google.api.client.util.Sleeper;
-import com.postmen.javasdk.handler.RateLimit;
-import com.postmen.javasdk.handler.RateLimitExecuteInterceptor;
 import com.postmen.javasdk.mockobject.MockSleeper;
 
 import junit.framework.TestCase;
@@ -62,16 +59,6 @@ public class RateLimitExecuteInterceptorTest extends TestCase {
 			System.out.println(sleeper.getDelay());
 		} catch (IOException e) {
 			
-		}
-	}
-	
-	public class SleeperTest implements Sleeper {
-		private Long delay;
-		public void sleep(long millis) throws InterruptedException {
-			delay = millis;
-		}
-		public Long getDelay() {
-			return delay;
 		}
 	}
 }
