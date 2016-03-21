@@ -22,8 +22,7 @@ public class RateLimitExecuteInterceptorTest extends TestCase {
 	private RateLimit rateLimit;
 	
 	public RateLimitExecuteInterceptorTest() {
-		// TODO Auto-generated constructor stub
-		super("Rate Limite Interceptor");
+		super("Rate Limit Interceptor");
 	}
 	
 	@Before
@@ -35,14 +34,10 @@ public class RateLimitExecuteInterceptorTest extends TestCase {
 	}
 	
 	@Test
-	public void testInterceptFirstTime() {
-		try {
-			HttpRequest request = transport.createRequestFactory().buildGetRequest(HttpTesting.SIMPLE_GENERIC_URL);
-			interceptor.intercept(request);
-			assertNull(sleeper.getDelay());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		}	
+	public void testInterceptFirstTime() throws IOException {
+		HttpRequest request = transport.createRequestFactory().buildGetRequest(HttpTesting.SIMPLE_GENERIC_URL);
+		interceptor.intercept(request);
+		assertNull(sleeper.getDelay());	
 	}
 	
 	@Test
@@ -55,8 +50,7 @@ public class RateLimitExecuteInterceptorTest extends TestCase {
 			interceptor.intercept(request);
 			Double delay = sleeper.getDelay().doubleValue();
 			delay = Math.ceil(delay/10) * 10;
-			assertEquals(5000, delay.intValue());
-			System.out.println(sleeper.getDelay());
+			assertTrue(delay.intValue() > 4000 && delay.intValue() <= 5000);
 		} catch (IOException e) {
 			
 		}
