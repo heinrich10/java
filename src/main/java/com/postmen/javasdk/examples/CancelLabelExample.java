@@ -62,7 +62,7 @@ public class CancelLabelExample {
 			Config config = new ConfigBuilder().setApiKey(ExampleHelper.getApiKey()).setEndpoint("http://localhost:8001/v3").build();
 			CancelLabelService cancelService = new CancelLabelService(config);	
 			
-			CancelLabelResponse response = cancelService.getWithId(id);
+			CancelLabelResponse response = cancelService.getById(id);
 			ExampleHelper.printObject(response);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

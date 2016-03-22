@@ -13,13 +13,14 @@
 	
 	<licenses>
 		<license>
-			<name>
-			</name>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
 		</license>
 	</licenses>
 	
 	<scm>
-		<url></url>
+		<url>https://github.com/postmen/postmen-sdk-java</url>
 	</scm>
 	
 	<properties>
@@ -34,12 +35,6 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>1.10.19</version>
-			<scope>test</scope>
-		</dependency>		
 		<dependency>
 			<groupId>com.google.http-client</groupId>
 			<artifactId>google-http-client</artifactId>

@@ -50,7 +50,7 @@ public class LabelExample {
 			Config config = new ConfigBuilder().setEndpoint("http://localhost:8001/v3").setApiKey(ExampleHelper.getApiKey()).build();
 	    	
 			LabelService service = new LabelService(config);
-			LabelResponse label = service.getWithId(id);
+			LabelResponse label = service.getById(id);
 			ExampleHelper.printObject(label);
 		} catch (IOException e) {
 			e.printStackTrace();

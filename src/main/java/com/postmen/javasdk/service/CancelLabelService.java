@@ -124,7 +124,7 @@ public class CancelLabelService extends Service {
 	 * @return Cancel label response object
 	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
-	public CancelLabelResponse getWithId(String id) throws IOException {
+	public CancelLabelResponse getById(String id) throws IOException {
 		PostmenUrl url = getUrl().appendPath(id);
 		CancelLabelResponse response = get(getHandler(), url, CancelLabelResponse.class);
 		return response;
@@ -137,7 +137,7 @@ public class CancelLabelService extends Service {
 	 * @return Cancel label response object
 	 * @throws IOException Signals that an I/O exception of some sort has occurred
 	 */
-	public CancelLabelResponse getWithId(String id, Config config) throws IOException {
+	public CancelLabelResponse getById(String id, Config config) throws IOException {
 		PostmenUrl url = getUrl(config).appendPath(id);
 		CancelLabelResponse response = get(new Handler(config), url, CancelLabelResponse.class);
 		return response;
